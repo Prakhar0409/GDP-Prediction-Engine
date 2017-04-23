@@ -1,0 +1,8 @@
+Data sources:
+1. GDP: https://github.com/Bhavikshah406/GDP-Prediction/blob/master/GDP_and_Major_Industrial_Sectors_of_Economy_Dataset.xls
+2. Inflation: http://www.inflation.eu/inflation-rates/india/inflation-india.aspx
+3. Unemployement: http://data.worldbank.org/indicator/SL.UEM.TOTL.ZS%20
+4. Population: http://www.worldometers.info/world-population/india-population/
+				http://data.worldbank.org/indicator/SP.POP.TOTL
+5. Consumption: http://data.worldbank.org/indicator/NE.CON.PETC.ZS
+6. Real Interest rate: http://data.worldbank.org/indicator/FR.INR.RINR
