@@ -1,8 +1,8 @@
 import numpy as np
 import sys
 
-data = np.genfromtxt('data.csv', delimiter=',')
-#print(np.corrcoef(data[:,-1],data[:,-2]))
+data = np.genfromtxt('data1.csv', delimiter=',')
+print(np.corrcoef(data[1:,-1],data[1:,-2]))
 
 m = data.shape[0]
 gdp = data[:,0]
