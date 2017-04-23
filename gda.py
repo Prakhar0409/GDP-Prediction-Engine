@@ -1,18 +1,32 @@
 import numpy as np
 import scipy
+from sklearn.metrics import r2_score
 
 # Read and shuffle data
 data = np.genfromtxt('data.csv', delimiter=',')
-np.random.shuffle(data)
-
-##data = data[:,1:]                 #remove year column
-#data = scipy.delete(data,4,1)      #remove disaster
-#data = scipy.delete(data,2,1)      #remove population count
-
-#divide data in train vs validation
 m = data.shape[0]
-validate = data[:m/4,:]
-data = data[m/4:,:]
+
+years = data[:,-1]
+data = scipy.delete(data,-10,1)      #remove old gdp
+#data = scipy.delete(data,-9,1)
+#data = scipy.delete(data,-8,1)
+#data = scipy.delete(data,-7,1)
+#data = scipy.delete(data,-6,1)
+#data = scipy.delete(data,-5,1)
+
+data = scipy.delete(data,-1,1)      #remove year column
+#data = scipy.delete(data,11,1)      #remove imports
+#data = scipy.delete(data,10,1)      #remove exports
+data = scipy.delete(data,8,1)      #remove m3
+data = scipy.delete(data,7,1)      #remove m1
+data = scipy.delete(data,2,1)      #remove population count
+
+validate = np.empty_like(data)
+validate[:] = data
+np.random.shuffle(data)
+#divide data in train vs validation
+#validate = data[m/2:,:]
+data = data[:m/2,:]
 
 #training phase
 
@@ -33,6 +47,9 @@ lsigma21 = sigma[1:,0]
 lsigma22 = sigma[1:,1:]
 
 # predicting on validation set
+#validate = np.genfromtxt('data.csv', delimiter=',')
+#validate = scipy.delete(validate,-1,1)
+#validate = scipy.delete(validate,-9,1)      #remove old gdp
 m = validate.shape[0]
 predict = np.zeros(m)
 
@@ -47,8 +64,17 @@ for i in range(m):
 print("####### PREDICTIONS #######")
 print(predict.shape)
 for i in range(m):
-    print(str(predict[i])+"   "+str(y1[i])+"     "+str(predict[i]/y1[i]))
+    print(str(years[i])+"     "+str(predict[i])+"   "+str(y1[i])+"     "+str(predict[i]/y1[i])+"    "+str(predict[i]-y1[i]))
 
-predict = abs(predict-y1)
-avg = predict.sum(axis=0)/m
-print(avg)
+print("#### Other Stats #####")
+r2 = r2_score(predict,y1)
+print("R2:",r2)
+
+y_std = [predict[i] - y1[i] for i in range(len(y1))]
+y_std = np.array(y_std)
+stdev = np.std(y_std)
+print("Std. Deviation of error:",stdev)
+
+tmp = abs(predict-y1)
+avg = tmp.sum(axis=0)/m
+print("Mean Absolute Error:",avg)
